@@ -36,6 +36,7 @@ interface IUserContext {
   isAuth: boolean;
   login: (credentials: TCredentials) => Promise<void>;
   register: (credentials: TCredentialsRegister) => Promise<void>;
+  signOut: () => Promise<void>;
 }
 
 const UserContext = createContext<IUserContext | null>(null);
@@ -92,6 +93,16 @@ const UserContextProvider = ({ children }: TUserContextProviderProps) => {
     }
   };
 
+  const signOut = async () => {
+    setAuthState({
+      user: null,
+      isAuth: false,
+    });
+
+    localStorage.removeItem("token");
+    axiosInstance.defaults.headers.common["authorization"] = "";
+  };
+
   useEffect(() => {
     if (!authState.isAuth) {
       router.push("/auth/login");
@@ -105,6 +116,7 @@ const UserContextProvider = ({ children }: TUserContextProviderProps) => {
         isAuth: authState.isAuth,
         login,
         register,
+        signOut,
       }}
     >
       {children}

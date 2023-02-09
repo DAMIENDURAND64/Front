@@ -31,7 +31,7 @@ function User() {
     <div>
       <Link href={"/"} className="ml-4">
         <button className="bg-blueStrateg_in text-white font-bold px-4 py-1 rounded-full w-fit mt-10">
-          acceuil
+          Home
         </button>
       </Link>
       <div className="w-full flex justify-center p-4">
