@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import axiosInstance from "@/utils/axiosInstance";
 import { useRouter } from "next/router";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 type TUser = {
   id: string;
@@ -13,6 +14,12 @@ type TUser = {
 type TCredentials = {
   email: string;
   password: string;
+};
+type TCredentialsRegister = {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
 };
 
 type TUserContextProviderProps = {
@@ -28,6 +35,7 @@ interface IUserContext {
   user: TUser | null;
   isAuth: boolean;
   login: (credentials: TCredentials) => Promise<void>;
+  register: (credentials: TCredentialsRegister) => Promise<void>;
 }
 
 const UserContext = createContext<IUserContext | null>(null);
@@ -52,11 +60,43 @@ const UserContextProvider = ({ children }: TUserContextProviderProps) => {
       const token = headers["authorization"];
       axiosInstance.defaults.headers.common["authorization"] = token;
       localStorage.setItem("token", token || "");
-      router.push("/homepage");
+      router.push("/");
     } catch (error) {
       console.log(error);
     }
   };
+
+  const register = async ({
+    email,
+    password,
+    firstName,
+    lastName,
+  }: TCredentialsRegister) => {
+    try {
+      const { data, headers } = await axiosInstance.post("/auth/register", {
+        email,
+        password,
+        firstName,
+        lastName,
+      });
+      setAuthState((state) => ({
+        isAuth: true,
+        user: data,
+      }));
+      const token = headers["authorization"];
+      axiosInstance.defaults.headers.common["authorization"] = token;
+      localStorage.setItem("token", token || "");
+      router.push("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (!authState.isAuth) {
+      router.push("/auth/login");
+    }
+  }, [authState]);
 
   return (
     <UserContext.Provider
@@ -64,6 +104,7 @@ const UserContextProvider = ({ children }: TUserContextProviderProps) => {
         user: authState.user,
         isAuth: authState.isAuth,
         login,
+        register,
       }}
     >
       {children}
