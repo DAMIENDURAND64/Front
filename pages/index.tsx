@@ -1,6 +1,6 @@
 import Head from "next/head";
 import NavBar from "@/components/NavBar";
-import Login from "@/components/Login";
+import Login from "pages/auth/Login";
 
 export default function Home() {
   return (
