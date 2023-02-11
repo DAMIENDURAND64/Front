@@ -10,7 +10,7 @@ type TUser = {
   id: string;
 };
 
-function User() {
+const User = () => {
   const { isLoading, error, data } = useQuery({
     queryKey: ["allUsers"],
     queryFn: async () => {
@@ -49,6 +49,6 @@ function User() {
       </div>
     </div>
   );
-}
+};
 
 export default User;

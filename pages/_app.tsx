@@ -6,7 +6,7 @@ import Layout from "@/components/Layout";
 
 const queryClient = new QueryClient();
 
-export default function App({ Component, pageProps }: AppProps) {
+const App = ({ Component, pageProps }: AppProps) => {
   return (
     <UserContextProvider>
       <QueryClientProvider client={queryClient}>
@@ -16,4 +16,6 @@ export default function App({ Component, pageProps }: AppProps) {
       </QueryClientProvider>
     </UserContextProvider>
   );
-}
+};
+
+export default App;

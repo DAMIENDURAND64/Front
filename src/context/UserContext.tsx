@@ -34,7 +34,7 @@ type AuthState = {
 interface IUserContext {
   user: TUser | null;
   isAuth: boolean;
-  login: (credentials: TCredentials) => Promise<void>;
+  login: (credentials: TCredentials) => Promise<boolean>;
   register: (credentials: TCredentialsRegister) => Promise<void>;
   signOut: () => Promise<void>;
 }
@@ -62,8 +62,10 @@ const UserContextProvider = ({ children }: TUserContextProviderProps) => {
       axiosInstance.defaults.headers.common["authorization"] = token;
       localStorage.setItem("token", token || "");
       router.push("/");
+      return true;
     } catch (error) {
       console.log(error);
+      return false;
     }
   };
 
