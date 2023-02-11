@@ -23,10 +23,9 @@ const User = () => {
 
   if (isLoading) return <div>Loading...</div>;
 
-  if (!data) return <div>No data</div>;
+  if (!data) return <div>No Users</div>;
 
   if (error) return <div>An error has occurred</div>;
-  console.log(data);
   return (
     <div>
       <Link href={"/"} className="ml-4">
